@@ -1,25 +1,22 @@
 import { LuClipboardCheck,LuClipboardPen,LuStar,LuClipboardList } from "react-icons/lu";
 import StatsCard from "../components/StatsCard";
 import TodoForm from "../components/TodoForm";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import TodoCard from "../components/TodoCard";
 
 export default function Dashboard() {
 
-    const [tasks,setTasks] = useState([]);
+    const [tasks,setTasks] = useState(() => {
+        const savedTasks = localStorage.getItem("tasks");
+        return savedTasks ? JSON.parse(savedTasks) : [];
+    });
     const [editingTask,setEditingTask] = useState(null);
 
-    useEffect(() => {
-        const storedTasks = localStorage.getItem("tasks");
-        if (storedTasks) {
-            setTasks(JSON.parse(storedTasks));
-        }
-    }, []);
+    
 
     useEffect(() => {
         localStorage.setItem("tasks", JSON.stringify(tasks));
     }, [tasks]);
-
 
     function addTodo(newTask) {
         setTasks((prevTasks) => [...prevTasks, newTask]);
