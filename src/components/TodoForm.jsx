@@ -17,6 +17,10 @@ export default function TodoForm({ onAddTodo,editingTask,onEditTodo,setEditingTa
             onEditTodo(editingTask.id, { title, description, priority, dueDate });
             setEditingTask(null);
         }else {
+            if (!title || !dueDate)  {
+                alert("Please fill in a title and due date for the task.");
+                return;
+            }
             onAddTodo({ id: Date.now(), title, description, priority, dueDate, isCompleted: false });
         }
     }
@@ -36,17 +40,39 @@ export default function TodoForm({ onAddTodo,editingTask,onEditTodo,setEditingTa
     }, [editingTask]);
 
     return(
-        <form onSubmit={handleSubmit} className="flex flex-col gap-2 m-4 p-4 border rounded-lg bg-gray-100">
-            <div className=" flex bg-black text-white text-lg font-calibri justify-center font-semibold mb-2">Add a New Task</div>
-            <div className="text-sm font-bold">Title:<input type="text" name="title" placeholder="Add a new task..." className="flex-1 border px-4 py-2 m-2 outline-none" value={title} onChange={(e) => setTitle(e.target.value)} /></div>       
-            <div className="text-sm flex items-center font-bold">Description:<textarea name="description" className="flex-1 border px-4 py-2 m-2 outline-none " placeholder="Add a description..." value={description} onChange={(e) => setDescription(e.target.value)} /></div>
-            <div className="text-sm font-bold">Priority:<select name="priority" className="border px-4 m-2 outline-none" value={priority} onChange={(e) => setPriority(e.target.value)}>        <option value="">Select Priority</option>
+    <form onSubmit={handleSubmit} className="flex flex-col gap-3 p-5 shadow-md hover:shadow-lg transition-shadow rounded-xl bg-white border border-blue-300">
+        <div className="bg-blue-950 -mx-5 -mt-5 mb-2 px-5 py-3 rounded-t-xl text-white text-lg font-semibold text-center">
+            {editingTask ? "Edit Task" : "Add New Task"}
+        </div>
+
+        <label className="text-sm font-semibold text-slate-700">
+            Title
+            <input type="text" name="title" placeholder="Add a new task..." className="w-full border border-slate-300 rounded-lg bg-white text-slate-800 px-3 py-1 mt-1 outline-none focus:ring-2 focus:ring-blue-400" value={title} onChange={(e) => setTitle(e.target.value)} />
+        </label>
+
+        <label className="text-sm font-semibold text-slate-700">
+            Description
+            <textarea name="description" rows={2} className="w-full border border-slate-300 rounded-lg bg-white text-slate-800 px-3 py-1 mt-1 outline-none focus:ring-2 focus:ring-blue-400 resize-none" placeholder="Add a description..." value={description} onChange={(e) => setDescription(e.target.value)} />
+        </label>
+
+        <label className="text-sm font-semibold text-slate-700">
+            Priority
+            <select name="priority" className="w-full border border-slate-300 rounded-lg bg-white text-slate-800 px-3 py-2 mt-1 outline-none focus:ring-2 focus:ring-blue-400" value={priority} onChange={(e) => setPriority(e.target.value)}>
+                <option value="">Select Priority</option>
                 <option value="low">Low</option>
                 <option value="medium">Medium</option>
                 <option value="high">High</option>
-            </select></div>
-            <div className="text-sm font-bold">Add Due Date:<input type="date" name="dueDate" className="border rounded-2xl px-4 py-2 m-2 outline-none" value={dueDate} onChange={(e) => setDueDate(e.target.value)} /></div>
-            <button type="submit" className="flex justify-center w-fit self-center items-center bg-blue-500 text-white rounded-2xl px-4 py-2 hover:bg-blue-600">{editingTask ? "Update Task" : "Add Task"}</button>
-        </form>
-    )
+            </select>
+        </label>
+
+        <label className="text-sm font-semibold text-slate-700">
+            Due Date
+            <input type="date" name="dueDate" className="w-full border border-slate-300 rounded-lg bg-white text-slate-800 px-3 py-2 mt-1 outline-none focus:ring-2 focus:ring-blue-400" value={dueDate} onChange={(e) => setDueDate(e.target.value)} />
+        </label>
+
+        <button type="submit" className="flex justify-center items-center w-36 mt-2 mx-32  bg-blue-950 font-semibold text-white rounded-lg py-2 hover:bg-blue-700 transition-colors">
+            {editingTask ? "Update Task" : "Add Task"}
+        </button>
+    </form>
+)
 }

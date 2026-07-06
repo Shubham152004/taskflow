@@ -2,13 +2,19 @@ import { LuLayoutDashboard, LuListTodo,LuStar,LuTrash2,LuSettings, LuClipboardCh
 
 export default function Sidebar() {
     return (
-        <aside className="flex flex-col bg-gray-200 p-4 w-64">
-            <button className="flex items-center gap-3 bg-blue-500 text-white rounded p-2 mb-4 hover:bg-blue-600"><LuLayoutDashboard/>Dashboard</button>
-            <button className="flex items-center gap-3 bg-blue-500 text-white rounded p-2 mb-4 hover:bg-blue-600"><LuListTodo/>My Tasks</button>
-            <button className="flex items-center gap-3 bg-blue-500 text-white rounded p-2 mb-4 hover:bg-blue-600"><LuStar/>Important</button>
-            <button className="flex items-center gap-3 bg-blue-500 text-white rounded p-2 mb-4 hover:bg-blue-600"><LuClipboardCheck/>Completed</button>
-            <button className="flex items-center gap-3 bg-blue-500 text-white rounded p-2 mb-4 hover:bg-blue-600"><LuTrash2/>Trash</button>
-            <button className="flex items-center gap-3 bg-blue-500 text-white rounded p-2 mb-4 hover:bg-blue-600"><LuSettings/>Settings</button>
-        </aside>
+        <aside className="flex flex-col bg-white border-r border-slate-200 p-4 w-60 gap-1">
+    {[
+        { icon: <LuLayoutDashboard/>, label: "Dashboard" },
+        { icon: <LuListTodo/>, label: "My Tasks" },
+        { icon: <LuStar/>, label: "Important" },
+        { icon: <LuClipboardCheck/>, label: "Completed" },
+        { icon: <LuTrash2/>, label: "Trash" },
+        { icon: <LuSettings/>, label: "Settings" },
+    ].map((item) => (
+        <button key={item.label} className="flex items-center gap-3 text-slate-600 rounded-lg px-3 py-2.5 hover:bg-blue-50 hover:text-blue-600 transition-colors text-sm font-medium">
+            {item.icon}{item.label}
+        </button>
+    ))}
+</aside>
     );
 }
