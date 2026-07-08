@@ -5,12 +5,10 @@ import { useState,useEffect } from "react";
 import TodoCard from "../components/TodoCard";
 
 
-export default function Dashboard({searchTask,darkMode}) {
 
-    const [tasks,setTasks] = useState(() => {
-        const savedTasks = localStorage.getItem("tasks");
-        return savedTasks ? JSON.parse(savedTasks) : [];
-    });
+export default function Dashboard({searchTask,darkMode,tasks,setTasks, addTodo,deleteTodo,editTodo,toggleComplete}) {
+
+
     
     const [editingTask,setEditingTask] = useState(() =>{
         const savedEditingTask = localStorage.getItem("editingTask");
@@ -32,34 +30,9 @@ export default function Dashboard({searchTask,darkMode}) {
         );
     });
 
-    useEffect(() => {
-        localStorage.setItem("tasks", JSON.stringify(tasks));
-    }, [tasks]);
+    
 
-    function addTodo(newTask) {
-        setTasks((prevTasks) => [...prevTasks, newTask]);
-    }
-
-    function deleteTodo(id) {
-        setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
-    }
-
-    function editTodo(id, updatedTask) {
-        setTasks((prevTasks) =>
-            prevTasks.map((task) => (task.id === id ? { ...task, ...updatedTask } : task))
-        );
-    }
-
-    function toggleComplete(id,isCompleted) {
-        setTasks((prevTasks) =>
-            prevTasks.map((task) => {
-                if (task.id === id) {
-                    return { ...task, isCompleted: !task.isCompleted };
-                }
-                return task;
-            })
-        );
-    }
+    
 
     return (
     <div className={`min-h-screen p-4 md:p-6 ${darkMode ? "dark:bg-gray-900 dark:text-white" : "bg-slate-100"}`}>
@@ -81,7 +54,6 @@ export default function Dashboard({searchTask,darkMode}) {
             <div className="lg:w-96 shrink-0">
                 <TodoForm onAddTodo={addTodo} editingTask={editingTask} onEditTodo={editTodo} setEditingTask={setEditingTask} darkMode={darkMode} />
             </div>
-
 
             <div className="flex-1">
                 <h2 className={`text-2xl font-bold mb-4 ${darkMode ? "dark:text-white" : "text-slate-800"}`}>
@@ -110,7 +82,7 @@ export default function Dashboard({searchTask,darkMode}) {
                         ))}
                     </div>
                 )}
-            </div>
+            </div> 
         </div>
     </div>
 );
