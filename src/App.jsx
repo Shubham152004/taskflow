@@ -5,13 +5,12 @@ import { useState,useEffect } from 'react';
 import TodoCard from './components/TodoCard';
 import Tasks from './pages/Tasks';
 import Today from './pages/Today';
+import { getTasks,createTask,updateTask,deleteTask } from './services/api';
+
 
 function App() {
   const [searchTask, setSearchTask] = useState("");
-  const [tasks,setTasks] = useState(() => {
-        const savedTasks = localStorage.getItem("tasks");
-        return savedTasks ? JSON.parse(savedTasks) : [];
-    });
+  const [tasks,setTasks] = useState([]);
 
   const [darkMode, setDarkMode] = useState(() => {
     const savedMode = localStorage.getItem("darkMode");
@@ -19,7 +18,7 @@ function App() {
   });
 
  
-    const today = new Date();
+  const today = new Date();
 
   // Filter tasks matching today's year, month, and day
     const tasksDueToday = tasks.filter((task) => {
@@ -38,34 +37,63 @@ function App() {
     localStorage.setItem("darkMode", JSON.stringify(darkMode));
   }, [darkMode]);
 
-  useEffect(() => {
-        localStorage.setItem("tasks", JSON.stringify(tasks));
-    }, [tasks]);
 
-  function addTodo(newTask) {
-        setTasks((prevTasks) => [...prevTasks, newTask]);
+    async function addTodo(newTask) {
+      try{
+        const response = await createTask(newTask);
+        setTasks((prevTasks) => [...prevTasks, response.data]);
+    }catch(error) {
+      console.error("Error creating task",error);
+    }
+  }
+
+    async function deleteTodo(_id) {
+        try{
+          const response = await deleteTask(_id)
+          setTasks((prevTasks) => prevTasks.filter((task) => task._id !== _id));
+        }catch(error){
+          console.error("Error deleting task",error);
+        }
     }
 
-    function deleteTodo(id) {
-        setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
-    }
-
-    function editTodo(id, updatedTask) {
+    async function editTodo(_id, updatedTask) {
+      try{
+        const response = await updateTask(_id,updatedTask)
         setTasks((prevTasks) =>
-            prevTasks.map((task) => (task.id === id ? { ...task, ...updatedTask } : task))
+            prevTasks.map((task) => (task._id === _id ? response.data: task))
         );
+      }catch(error){
+        console.error("Error deleting task",error);
+      }
     }
 
-    function toggleComplete(id,isCompleted) {
+     async function toggleComplete(_id, isCompleted) {
+    try {
+        const response = await updateTask(_id, {
+            isCompleted: !isCompleted
+        });
+
         setTasks((prevTasks) =>
-            prevTasks.map((task) => {
-                if (task.id === id) {
-                    return { ...task, isCompleted: !task.isCompleted };
-                }
-                return task;
-            })
+            prevTasks.map((task) =>
+                task._id === _id ? response.data : task
+            )
         );
+    } catch (error) {
+        console.error("Error toggling task completion:", error);
     }
+}
+
+    useEffect(() => {
+      const fetchTask = async () => {
+        try {
+          const response = await getTasks();
+          setTasks(response.data);
+        } catch(error){
+          console.error("Error fetchinf tasks:" , error);
+        } 
+      };
+      fetchTask();
+    },[]);
 
   return (
     <MainLayout searchTask={searchTask} setSearchTask={setSearchTask} darkMode={darkMode} setDarkMode={setDarkMode}>

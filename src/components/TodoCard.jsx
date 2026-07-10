@@ -25,7 +25,7 @@ export default function TodoCard({ id, title, description, priority, dueDate, is
 
             {dueDate && (
                 <p className={`text-xs ${darkMode ? "dark:text-gray-400" : "text-slate-500"} mb-4`}>
-                    📅 Due: {dueDate}
+                    📅 Due: {new Date(dueDate).toLocaleDateString("en-IN", { day: "numeric",  month: "long",year: "numeric",})}
                 </p>
             )}
 

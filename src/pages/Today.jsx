@@ -13,7 +13,7 @@ export default function Today({tasks,tasksDueToday,addTodo,editTodo,deleteTodo,t
       ) : (
         <ul className={`${darkMode? "dark:text-white" : "text-black"}`}>
           {tasksDueToday.map((task,index) => (
-            <li key={task.id}><h3 className="m-2  w-fit">({index+1})    {task.dueDate}</h3><p className={`italic ${darkMode ? "dark:bg-blue-900" : "bg-blue-300"} ml-8 mb-4 w-fit`}>{task.title} : {task.description}</p></li>
+            <li key={task.id}><h3 className="m-2  w-fit">({index+1}) {new Date(task.dueDate).toLocaleDateString("en-IN", { day: "numeric",  month: "long",year: "numeric",})}</h3><p className={`italic ${darkMode ? "dark:bg-blue-900" : "bg-blue-300"} ml-8 mb-4 w-fit`}>{task.title} : {task.description}</p></li>
           ))}
         </ul>
     )}
@@ -22,7 +22,7 @@ export default function Today({tasks,tasksDueToday,addTodo,editTodo,deleteTodo,t
         <p className={`${darkMode? "dark:text-white" : "text-black"}`}>All tasks are completed today.</p>
     ) :
         (<ul className={`${darkMode? "dark:text-white" : "text-black"}`}>{pendingTasks.map((task,index) => (
-            <li key={task.id}><h3 className="m-2  w-fit">({index+1})    {task.dueDate}</h3><p className={`italic ${darkMode ? "dark:bg-blue-900" : "bg-blue-300"} ml-8 mb-4 w-fit`}>{task.title} : {task.description}</p></li>
+            <li key={task.id}><h3 className="m-2  w-fit">({index+1})    {new Date(task.dueDate).toLocaleDateString("en-IN", { day: "numeric",  month: "long",year: "numeric",})}</h3><p className={`italic ${darkMode ? "dark:bg-blue-900" : "bg-blue-300"} ml-8 mb-4 w-fit`}>{task.title} : {task.description}</p></li>
           ))}</ul>
     )}
     </div>

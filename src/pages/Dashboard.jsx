@@ -6,7 +6,7 @@ import TodoCard from "../components/TodoCard";
 
 
 
-export default function Dashboard({searchTask,darkMode,tasks,setTasks, addTodo,deleteTodo,editTodo,toggleComplete}) {
+export default function Dashboard({searchTask,darkMode,tasks,addTodo,deleteTodo,editTodo,toggleComplete}) {
 
 
     
@@ -67,15 +67,15 @@ export default function Dashboard({searchTask,darkMode,tasks,setTasks, addTodo,d
                     <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
                         {filteredTasks.map((task) => (
                             <TodoCard
-                                key={task.id}
-                                id={task.id}
+                                key={task._id}
+                                _id={task._id}
                                 title={task.title}
                                 description={task.description}
                                 priority={task.priority}
                                 dueDate={task.dueDate}
                                 isCompleted={task.isCompleted}
-                                onDelete={() => deleteTodo(task.id)}
-                                onToggleComplete={() => toggleComplete(task.id, task.isCompleted)}
+                                onDelete={() => deleteTodo(task._id)}
+                                onToggleComplete={() => toggleComplete(task._id, task.isCompleted)}
                                 onEdit={() => setEditingTask(task)}
                                 darkMode={darkMode}
                             />

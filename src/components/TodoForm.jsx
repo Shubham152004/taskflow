@@ -14,14 +14,14 @@ export default function TodoForm({ onAddTodo,editingTask,onEditTodo,setEditingTa
         const dueDate = e.target.elements.dueDate.value;
         
         if (editingTask) {
-            onEditTodo(editingTask.id, { title, description, priority, dueDate });
+            onEditTodo(editingTask._id, { title, description, priority, dueDate });
             setEditingTask(null);
         }else {
             if (!title || !dueDate)  {
                 alert("Please fill in a title and due date for the task.");
                 return;
-            }
-            onAddTodo({ id: Date.now(), title, description, priority, dueDate, isCompleted: false });
+            }console.log({title, description, priority, dueDate, isCompleted: false });
+            onAddTodo({title, description, priority, dueDate, isCompleted: false });
         }
     }
 
