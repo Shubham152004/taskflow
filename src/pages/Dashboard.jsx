@@ -21,7 +21,6 @@ export default function Dashboard({searchTask,darkMode,tasks,addTodo,deleteTodo,
 
     const filteredTasks= tasks.filter((task) => {
         const search = searchTask.toLowerCase();
-        console.log("searchTask:", searchTask,task);
         return (
             task.title.toLowerCase().includes(search) ||
             task.description.toLowerCase().includes(search) ||

@@ -1,21 +1,14 @@
-import { LuHouse,LuSearch,LuSettings,LuPhone,LuUserRound, } from "react-icons/lu";
-import {Link} from "react-router-dom";
+import { LuHouse,LuSearch,LuSettings,LuPhone,LuUserRound, LuLogIn, } from "react-icons/lu";
+import {Link,useNavigate} from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 export default function Navbar({ searchTask, setSearchTask ,darkMode, setDarkMode}) {
-
-    const navList = (
-        <ul className="flex items-center gap-12">
-            <li><Link to="/"><a className="text-blue-500 items-center text-lg flex gap-2 hover:text-gray-300"><LuHouse/>Home</a></Link></li>
-            <li><div className="text-blue-500 items-center  text-lg flex gap-2 hover:text-gray-300 "><LuSearch/><input type="text" placeholder="Search tasks..." value={searchTask} onChange={(e) => setSearchTask(e.target.value)} className="border rounded px-2 py-1"/></div></li>
-            <li><button className="bg-blue-500 text-white rounded p-2 hover:bg-blue-600">Log in</button></li>
-            <li><Link to="/Profile"><a className="text-blue-500 items-center  text-lg flex gap-2 hover:text-gray-300"><LuUserRound/>Profile</a></Link></li>
-            <li><button onClick={() => setDarkMode(!darkMode)} className="bg-gray-600 text-white rounded p-2 hover:bg-black">🌙</button></li>
-            <li><Link to="/Settings"><a className="text-blue-500 items-center  text-lg flex gap-2 hover:text-gray-300"><LuSettings/>Settings</a></Link></li>   
-        </ul>
-    );
-    
-    
-    
+    const {user,token,logout} = useAuth();
+    const navigate=useNavigate();
+    function handleLogout() {
+        logout();
+        navigate("/login");
+    }
     return (
         <nav className="bg-slate-800 flex justify-between items-center px-6 py-3 shadow-md">
         <a href="#" className="text-white text-2xl font-bold flex items-center gap-1">TaskFlow</a>
@@ -27,8 +20,17 @@ export default function Navbar({ searchTask, setSearchTask ,darkMode, setDarkMod
                 <input type="text" placeholder="Search tasks..." value={searchTask} onChange={(e) => setSearchTask(e.target.value)} className="bg-transparent text-white placeholder-slate-400 outline-none w-40"/>
             </div>
         </li>
-        <li><button className="bg-blue-600 text-white rounded-lg px-4 py-1.5 hover:bg-blue-700 transition-colors">Log in</button></li>
-        <li><a href="#" className="text-slate-200 flex items-center gap-2 hover:text-blue-400 transition-colors"><LuUserRound/>Profile</a></li>
+        {token ? (
+                <button onClick={handleLogout} className="text-slate-200 flex items-center gap-2 hover:text-blue-400 transition-colors">
+                    Logout
+                </button>
+            ) : (
+                <>
+                    <li><Link to="/login"><p className="text-slate-200 flex items-center gap-2 hover:text-blue-400 transition-colors"><LuLogIn/> Login</p></Link></li>
+                    <li><Link to="/register"><p className="text-slate-200 flex items-center gap-2 hover:text-blue-400 transition-colors"><LuUserRound/>Register</p></Link></li>
+                </>
+            )}
+        
         <li><button onClick={() => setDarkMode(!darkMode)} className="bg-slate-700 text-white rounded-lg p-2 hover:bg-slate-600 transition-colors">{darkMode ? "☀️ Light" : "🌙 Dark"}</button></li>
         <li><a href="#" className="text-slate-200 flex items-center gap-2 hover:text-blue-400 transition-colors"><LuSettings/>Settings</a></li>
     </ul>

@@ -2,7 +2,7 @@ import Task from "../models/Task.js";
 
 export const getTasks = async (req,res) => {
     try{
-        const tasks = await Task.find();
+        const tasks = await Task.find({user:req.user._id});
         res.status(200).json(tasks);
     }catch(error) {
         res.status(500).json({
@@ -13,7 +13,7 @@ export const getTasks = async (req,res) => {
 
 export const getTaskById = async (req,res) => {
     try{
-        const task = await Task.findById(req.params.id);
+        const task = await Task.findById({_id:req.params.id,user:req.user._id});
         if(!task) {
             return res.status(404).json({
                 message: "Task not found"
@@ -29,7 +29,7 @@ export const getTaskById = async (req,res) => {
 
 export const createTask = async (req,res) => {
     try {
-        const task = await Task.create(req.body);
+        const task = await Task.create({...req.body,user:req.user._id});
         res.status(201).json(task);
     } catch(error){
         res.status(400).json({
@@ -41,7 +41,7 @@ export const createTask = async (req,res) => {
 export const updateTask = async (req, res) => {
     try {
         const task = await Task.findByIdAndUpdate(
-            req.params.id,
+            {_id:req.params.id,user:req.user._id},
             req.body,
             { new: true }
         );
@@ -63,7 +63,7 @@ export const updateTask = async (req, res) => {
 export const deleteTask = async (req,res) =>{
     try{
         const task = await Task.findByIdAndDelete(
-            req.params.id
+            {_id:req.params.id,user:req.user._id}
         );
      if (!task) {
             return res.status(404).json({
