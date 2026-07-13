@@ -17,6 +17,7 @@ app.use(cors({
     origin: [
       "http://localhost:5173",
       "https://taskflow-ebon-alpha.vercel.app",
+      "https://taskflow-proweb3.vercel.app",
     ],methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
   }));
