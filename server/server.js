@@ -6,20 +6,20 @@ import taskRoutes from "./routes/taskRoutes.js"
 import authRoutes from "./routes/authRoutes.js"
 
 dotenv.config();
-console.log("JWT_SECRET:", process.env.JWT_SECRET);
+
 
 const app =express();
 
 const PORT =process.env.PORT || 5000;
 
 //Middleware
-app.use(cors(cors({
+app.use(cors({
     origin: [
       "http://localhost:5173",
       "https://taskflow-ebon-alpha.vercel.app",
-    ],
+    ],methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
-  })));
+  }));
 app.use(express.json());
 
 connectDB();
