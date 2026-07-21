@@ -18,6 +18,7 @@ export default function Login({darkMode}) {
         e.preventDefault();
         try {
             const response = await loginUser(formData);
+            localStorage.setItem("token",response.data.token);
             login(response.data.user, response.data.token);
             alert("Login Successful!");
             navigate("/");
