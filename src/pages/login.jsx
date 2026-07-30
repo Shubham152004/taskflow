@@ -7,7 +7,7 @@ import { LuMail, LuLock } from "react-icons/lu";
 export default function Login({darkMode}) {
     const navigate = useNavigate();
     const { token, login } = useAuth();
-
+    
     const [formData, setFormData] = useState({ email: "", password: "" });
 
     function handleChange(e) {

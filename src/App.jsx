@@ -42,8 +42,6 @@ function App() {
   });
 
 
-
-
   useEffect(() => {
     localStorage.setItem("darkMode", JSON.stringify(darkMode));
   }, [darkMode]);
@@ -110,6 +108,7 @@ function App() {
         try {
           setLoading(true);
           const response = await getTasks();
+          console.log("Tasks API response:", response.data);
           setTasks(response.data);
         } catch(error){
           console.error("Error fetching tasks:" , error);
