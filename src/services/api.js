@@ -13,6 +13,19 @@ API.interceptors.request.use((config) => {
   return config;
 });
 
+//Handle expired or invalid tokens
+API.interceptors.response.use((response)=> response,
+(error) => {
+  if(error.response?.status === 401) {
+    localStorage.removeItem("token");
+    localStorage.removeItem("token");
+
+    window.location.href = "/login";
+  }
+  return Promise.reject(error);
+}
+);
+
 // GET all tasks
 export const getTasks = () => API.get("/tasks");
 
